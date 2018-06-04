@@ -1,8 +1,5 @@
 package com.liu233w.encryption.ex1;
 
-import com.liu233w.encryption.ex1.exceptions.WrongInputException;
-
-import java.util.HashSet;
 
 /**
  * 实现了 Playfair 的加密算法
@@ -15,12 +12,12 @@ public class PlayfairCipher {
      * 使用指定的密钥初始化加密类
      *
      * @param keyword 密钥（参考题目要求）
-     * @throws WrongInputException 密钥不合格时抛出
+     * @throws IllegalArgumentException 密钥不合格时抛出
      */
-    public PlayfairCipher(String keyword) throws WrongInputException {
+    public PlayfairCipher(String keyword) throws IllegalArgumentException {
 
         if (keyword.length() > 25) {
-            throw new WrongInputException("密钥长度不能大于 25");
+            throw new IllegalArgumentException("密钥长度不能大于 25");
         }
 
         boolean[] selected = new boolean[26];
@@ -32,10 +29,10 @@ public class PlayfairCipher {
             c -= 'A';
 
             if (c < 0 || c >= 26) {
-                throw new WrongInputException("密钥只能包含大写字母");
+                throw new IllegalArgumentException("密钥只能包含大写字母");
             }
             if (selected[c]) {
-                throw new WrongInputException("密钥中的字母不能重复（注意密钥中I和J算同一个字母）");
+                throw new IllegalArgumentException("密钥中的字母不能重复（注意密钥中I和J算同一个字母）");
             }
 
             // 单独处理 I J

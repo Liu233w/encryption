@@ -1,6 +1,5 @@
 package com.liu233w.encryption.ex1;
 
-import com.liu233w.encryption.ex1.exceptions.WrongInputException;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -9,12 +8,12 @@ public class PlayfairCipherTest {
 
     private PlayfairCipher playfairCipher;
 
-    public PlayfairCipherTest() throws WrongInputException {
+    public PlayfairCipherTest() throws IllegalArgumentException {
         playfairCipher = new PlayfairCipher("INFOSEC");
     }
 
     @Test
-    public void testConstructor() {
+    public void testConstructor() throws IllegalArgumentException {
         char[][] table = playfairCipher.getTable();
 
         char[][] expected = {
@@ -26,6 +25,15 @@ public class PlayfairCipherTest {
         };
 
         assertThat(table).isEqualTo(expected);
+
+        assertThat(new PlayfairCipher("NFOSEC").getTable())
+                .isEqualTo(new char[][]{
+                        buildRowFromString("NFOSE"),
+                        buildRowFromString("CABDG"),
+                        buildRowFromString("HIKLM"),
+                        buildRowFromString("PQRTU"),
+                        buildRowFromString("VWXYZ"),
+                });
     }
 
     private char[] buildRowFromString(String row) {
