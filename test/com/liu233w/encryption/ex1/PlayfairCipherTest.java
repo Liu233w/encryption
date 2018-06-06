@@ -43,4 +43,14 @@ public class PlayfairCipherTest {
         }
         return chars;
     }
+
+    @Test
+    public void testEncrypt() {
+        doTest("CRYPTOISTOOEASY", "AQVTYBNIYBYFCBOZ");
+        doTest("CRYPTOISTOOEAS", "AQVTYBNIYBYFCBFZ");
+    }
+
+    private void doTest(String plaintext, String cipherText) {
+        assertThat(playfairCipher.encrypt(plaintext)).isEqualTo(cipherText);
+    }
 }

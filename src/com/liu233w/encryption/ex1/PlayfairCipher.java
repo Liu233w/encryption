@@ -1,7 +1,5 @@
 package com.liu233w.encryption.ex1;
 
-import com.liu233w.encryption.utils.Pair;
-
 import java.util.Objects;
 
 /**
@@ -66,28 +64,76 @@ public class PlayfairCipher {
         table = tableBuilder.getTable();
     }
 
+    /**
+     * 获取加密Table（只用于调试）
+     *
+     * @return
+     */
     public char[][] getTable() {
         return table;
     }
 
+    /**
+     * 加密文本
+     *
+     * @param plaintext
+     * @return
+     */
     public String encrypt(String plaintext) {
+        plaintext = processText(plaintext);
         StringBuilder stringBuilder = new StringBuilder();
-        String[] digrams = plaintext.split(".*", 2);
 
-        for (String digram :
-                digrams) {
-            assert digram.length() == 1 || digram.length() == 2;
-            if (digram.length() == 1) {
-                stringBuilder.append(digram);
-                stringBuilder.append('X');
-            } else {
-                stringBuilder.append(getPair(digram.charAt(0), digram.charAt(1)));
-            }
+        for (int start = 0; start < plaintext.length(); start += 2) {
+            String digram = plaintext.substring(start, start + 2);
+            assert digram.length() == 2;
+
+            stringBuilder.append(getPair(digram.charAt(0), digram.charAt(1)));
         }
 
         return stringBuilder.toString();
     }
 
+    /**
+     * 按照题目要求处理明文
+     *
+     * @param plainText
+     * @return
+     */
+    private static String processText(String plainText) {
+
+        final StringBuilder sb = new StringBuilder();
+
+        if (plainText.charAt(0) < 'A' || plainText.charAt(0) > 'Z') {
+            throw new IllegalArgumentException("要加密的文字必须是大写的英文字母");
+        }
+        sb.append(plainText.charAt(0));
+
+        for (int i = 1; i < plainText.length(); i++) {
+
+            if (plainText.charAt(i) < 'A' || plainText.charAt(i) > 'Z') {
+                throw new IllegalArgumentException("要加密的文字必须是大写的英文字母");
+            }
+            if (plainText.charAt(i) == sb.charAt(sb.length() - 1)) {
+                assert sb.charAt(sb.length() - 1) != 'X'; // 按照题目要求，如果是XX这样的字符的话，题目没有说怎么处理，这种情况下会无限循环
+                sb.append('X');
+                --i;
+            } else {
+                sb.append(plainText.charAt(i));
+            }
+        }
+        if (sb.length() % 2 == 1) {
+            sb.append('X');
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 获取某个分组的密文
+     *
+     * @param firstChar
+     * @param secondChar
+     * @return
+     */
     private String getPair(char firstChar, char secondChar) {
 
         if (firstChar == secondChar) {
@@ -110,23 +156,27 @@ public class PlayfairCipher {
                     + table[(secondLocation.getRow() + 1) % TABLE_SIZE][secondLocation.getCol()];
 
         } else {
-            // 让行号小的在前面
-            if (firstLocation.getRow() > secondLocation.getRow()) {
-                final Location temp = firstLocation;
-                firstLocation = secondLocation;
-                secondLocation = temp;
-            }
-
             /*
-            1....
+            12 -> AB
+
+            1...A
             .....
-            ....2
+            B...2
 
             or
 
-            ....1
+            A...1
             .....
-            2....
+            2...B
+
+            or
+
+            B...2
+            .....
+            1...A
+
+            or
+            .........
              */
             return ""
                     + table[firstLocation.getRow()][secondLocation.getCol()]
@@ -134,11 +184,14 @@ public class PlayfairCipher {
         }
     }
 
-    private Location getCharLocation(char item) throws IllegalArgumentException {
-
-        if (item < 'A' || item > 'Z') {
-            throw new IllegalArgumentException("要加密的文字必须是大写的英文字母");
-        }
+    /**
+     * 获取字母在字母表中的位置
+     *
+     * @param item
+     * @return
+     * @throws IllegalArgumentException
+     */
+    private Location getCharLocation(char item) {
 
         if (item == 'J') {
             item = 'I';
