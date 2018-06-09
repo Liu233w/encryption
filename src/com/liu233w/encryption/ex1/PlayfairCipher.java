@@ -19,7 +19,7 @@ public class PlayfairCipher {
     public PlayfairCipher(String keyword) throws IllegalArgumentException {
 
         if (keyword.length() > 25) {
-            throw new IllegalArgumentException("密钥长度不能大于 25");
+            throw new IllegalArgumentException("The length of the keyword cannot be bigger than 25");
         }
 
         boolean[] selected = new boolean[26];
@@ -31,10 +31,10 @@ public class PlayfairCipher {
             c -= 'A';
 
             if (c < 0 || c >= 26) {
-                throw new IllegalArgumentException("密钥只能包含大写字母");
+                throw new IllegalArgumentException("The keyword can only contain upper alphabet");
             }
             if (selected[c]) {
-                throw new IllegalArgumentException("密钥中的字母不能重复（注意密钥中I和J算同一个字母）");
+                throw new IllegalArgumentException("There cannot be same alphabet in the keyword (Notice that I and J counts as the same letter)");
             }
 
             // 单独处理 I J
@@ -104,14 +104,14 @@ public class PlayfairCipher {
         final StringBuilder sb = new StringBuilder();
 
         if (plainText.charAt(0) < 'A' || plainText.charAt(0) > 'Z') {
-            throw new IllegalArgumentException("要加密的文字必须是大写的英文字母");
+            throw new IllegalArgumentException("The text must be upper alphabet");
         }
         sb.append(plainText.charAt(0));
 
         for (int i = 1; i < plainText.length(); i++) {
 
             if (plainText.charAt(i) < 'A' || plainText.charAt(i) > 'Z') {
-                throw new IllegalArgumentException("要加密的文字必须是大写的英文字母");
+                throw new IllegalArgumentException("The text must be upper alphabet");
             }
             if (plainText.charAt(i) == sb.charAt(sb.length() - 1)) {
                 assert sb.charAt(sb.length() - 1) != 'X'; // 按照题目要求，如果是XX这样的字符的话，题目没有说怎么处理，这种情况下会无限循环

@@ -20,7 +20,7 @@ public class CaesarCipher {
 
             char c = plaintext.charAt(i);
             if (c < 'A' || c > 'Z') {
-                throw new IllegalArgumentException("只能输入大写英文字母");
+                throw new IllegalArgumentException("Upper Alphabet Only");
             }
 
             c += key;
