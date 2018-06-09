@@ -20,4 +20,9 @@ public class RsaPublicKey {
     public BigInteger getE() {
         return e;
     }
+
+    @Override
+    public String toString() {
+        return String.format("[%s,%s]", n.toString(), e.toString());
+    }
 }

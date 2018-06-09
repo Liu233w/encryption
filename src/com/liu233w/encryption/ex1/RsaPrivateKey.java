@@ -20,4 +20,9 @@ public class RsaPrivateKey {
     public BigInteger getD() {
         return d;
     }
+
+    @Override
+    public String toString() {
+        return String.format("[%s,%s]", n.toString(), d.toString());
+    }
 }
