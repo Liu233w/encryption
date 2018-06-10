@@ -25,9 +25,10 @@ public class Program {
                     "(0) EXIT\n" +
                     "Enter the number: ");
 
-            final int i = scanner.nextInt();
-
             try {
+
+                final int i = scanner.nextInt();
+
                 switch (i) {
                     case 0:
                         System.out.println("Bye.");
@@ -96,9 +97,10 @@ public class Program {
 
     private static void playfair() {
         System.out.print("Enter text (upper alphabet only): ");
-        final String text = scanner.next();
+        scanner.nextLine(); // consume line end
+        final String text = scanner.nextLine();
         System.out.print("Enter the key(upper alphabet only): ");
-        final String key = scanner.next();
+        final String key = scanner.nextLine();
 
         final PlayfairCipher playfairCipher = new PlayfairCipher(key);
 
@@ -106,8 +108,9 @@ public class Program {
     }
 
     private static void caesar() {
-        System.out.print("Enter text (upper alphabet only): ");
-        final String text = scanner.next();
+        System.out.print("Enter text: ");
+        scanner.nextLine(); // consume line end
+        final String text = scanner.nextLine();
         System.out.print("Enter the key(-26 ~ 26): ");
         final int key = scanner.nextInt();
         System.out.printf("Result: %s\n\n", CaesarCipher.encrypt(text, key));
