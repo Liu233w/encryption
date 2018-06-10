@@ -110,6 +110,7 @@ public class Program {
 
         final PlayfairCipher playfairCipher = new PlayfairCipher(key);
 
+        System.out.printf("The matrix:\n%s", playfairCipher.displayTable());
         System.out.printf("Result: %s\n\n", playfairCipher.encrypt(text));
     }
 

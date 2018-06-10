@@ -73,6 +73,20 @@ public class PlayfairCipher {
         return table;
     }
 
+    public String displayTable() {
+
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        for (int row = 0; row < table.length; row++) {
+            for (int col = 0; col < table[row].length; col++) {
+                stringBuilder.append(table[row][col]);
+            }
+            stringBuilder.append('\n');
+        }
+
+        return stringBuilder.toString();
+    }
+
     /**
      * 加密文本
      *
