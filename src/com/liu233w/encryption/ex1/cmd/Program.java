@@ -49,6 +49,7 @@ public class Program {
                 System.err.println(e.getMessage());
             } catch (InputMismatchException e) {
                 System.err.printf("Input mismatch: %s\n", e.getMessage());
+                clearBuffer();
             }
         }
     }
@@ -71,27 +72,32 @@ public class Program {
                     case "x":
                         return;
                     case "e": {
-                        System.out.print("Enter your plain text (integer only): ");
-                        final BigInteger text = scanner.nextBigInteger();
+                        System.out.print("Enter your plain text: ");
+                        scanner.nextLine(); // consume line end
+                        final String text = scanner.nextLine();
+                        final BigInteger input = new BigInteger(text.getBytes());
 
-                        System.out.printf("Result: %s\n", RsaCipher.encrypt(text, rsaKeyPair.getPublicKey()));
+                        System.out.printf("Result: %s\n", RsaCipher.encrypt(input, rsaKeyPair.getPublicKey()));
                         break;
                     }
                     case "d": {
                         System.out.print("Enter your cypher text (integer only): ");
-                        final BigInteger text = scanner.nextBigInteger();
-
-                        System.out.printf("Result: %s\n", RsaCipher.decrypt(text, rsaKeyPair.getPrivateKey()));
+                        final String text = scanner.next();
+                        final BigInteger res = RsaCipher.decrypt(new BigInteger(text), rsaKeyPair.getPrivateKey());
+                        System.out.printf("Result: %s\n", new String(res.toByteArray()));
                         break;
                     }
                     default:
                         throw new IllegalArgumentException("Please enter the command on the list");
                 }
             }
+        } catch (NumberFormatException e) {
+            System.err.printf("Number Error: %s\n", e.getMessage());
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         } catch (InputMismatchException e) {
             System.err.printf("Input mismatch: %s\n", e.getMessage());
+            clearBuffer();
         }
     }
 
@@ -114,5 +120,9 @@ public class Program {
         System.out.print("Enter the key(-26 ~ 26): ");
         final int key = scanner.nextInt();
         System.out.printf("Result: %s\n\n", CaesarCipher.encrypt(text, key));
+    }
+
+    private static void clearBuffer() {
+        scanner.nextLine();
     }
 }
