@@ -15,12 +15,15 @@ public class CaesarCipher {
     public static String encrypt(String plaintext, int key) throws IllegalArgumentException {
 
         final StringBuilder ciphertext = new StringBuilder();
+        plaintext = plaintext.toUpperCase();
 
         for (int i = 0; i < plaintext.length(); ++i) {
 
             char c = plaintext.charAt(i);
             if (c < 'A' || c > 'Z') {
-                throw new IllegalArgumentException("Upper Alphabet Only");
+//                throw new IllegalArgumentException("Upper Alphabet Only");
+                ciphertext.append(c);
+                continue;
             }
 
             c += key;
