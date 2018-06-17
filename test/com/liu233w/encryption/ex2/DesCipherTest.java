@@ -22,11 +22,11 @@ public class DesCipherTest {
         final DesCipher desCipher = new DesCipher(DesKey.random());
 
         final String plaintext = "Hello World hhhhh";
-        final String cipherText = desCipher.encrypt(plaintext);
+        final byte[] ciphered = desCipher.encrypt(plaintext);
 
-        assertThat(cipherText).isNotEmpty();
+        assertThat(ciphered).isNotEmpty();
 
-        final String decrypted = desCipher.decrypt(cipherText);
+        final String decrypted = desCipher.decrypt(ciphered);
 
         assertThat(decrypted).isEqualTo(plaintext);
     }

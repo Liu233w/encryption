@@ -160,20 +160,6 @@ public class DesCipher {
         buildKeySchedule(key.getKey());
     }
 
-    private static String binToHex(String bin) {
-
-        BigInteger b = new BigInteger(bin, 2);
-
-        return b.toString(16);
-    }
-
-    private static String hexToBin(String hex) {
-
-        BigInteger b = new BigInteger(hex, 16);
-
-        return b.toString(2);
-    }
-
     private static String binToUTF(String bin) {
 
         // Convert back to String
@@ -205,13 +191,21 @@ public class DesCipher {
         return bin.toString();
     }
 
+    private static byte[] binToBytes(String bin) {
+        return new BigInteger(bin, 2).toByteArray();
+    }
+
+    private static String bytesToBin(byte[] bytes) {
+        return new BigInteger(bytes).toString(2);
+    }
+
     /**
      * Encrypt a string message with the DES block cipher
      *
      * @param plaintext plaintext with utf-8 encoding
-     * @return encrypted text in hex
+     * @return encrypted text in bytes
      */
-    public String encrypt(String plaintext) {
+    public byte[] encrypt(String plaintext) {
 
         StringBuilder binPlaintext = new StringBuilder(utfToBin(plaintext));
 
@@ -244,18 +238,18 @@ public class DesCipher {
             binCiphered.append(binCipheredBlock);
         }
 
-        return binToHex(binCiphered.toString());
+        return binToBytes(binCiphered.toString());
     }
 
     /**
      * Decrypt a string message with the DES block cipher
      *
-     * @param plaintext : String - Hex string to decrypt
+     * @param ciphered : ciphered to decrypt
      * @return Plaintext message string
      */
-    public String decrypt(String plaintext) {
+    public String decrypt(byte[] ciphered) {
 
-        StringBuilder binPlaintext = new StringBuilder(hexToBin(plaintext));
+        StringBuilder binPlaintext = new StringBuilder(bytesToBin(ciphered));
 
         // Add padding if necessary
         int remainder = binPlaintext.length() % 64;
