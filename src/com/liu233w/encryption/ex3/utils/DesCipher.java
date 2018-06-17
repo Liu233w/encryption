@@ -151,11 +151,13 @@ public class DesCipher {
 
     private long[] K;
 
-    public DesCipher() {
+    public DesCipher(DesKey key) {
 
         // First index is garbage value, loops operating on this should start with index = 1
         K = new long[17];
 
+        // Build the key schedule
+        buildKeySchedule(key.getKey());
     }
 
     private static String binToHex(String bin) {
@@ -206,14 +208,10 @@ public class DesCipher {
     /**
      * Encrypt a string message with the DES block cipher
      *
-     * @param key       key for des
      * @param plaintext plaintext with utf-8 encoding
      * @return encrypted text in hex
      */
-    public String encrypt(DesKey key, String plaintext) {
-
-        // Build the key schedule
-        buildKeySchedule(key.getKey());
+    public String encrypt(String plaintext) {
 
         StringBuilder binPlaintext = new StringBuilder(utfToBin(plaintext));
 
@@ -246,26 +244,16 @@ public class DesCipher {
             binCiphered.append(binCipheredBlock);
         }
 
-        // Destroy key schedule
-        for (int i = 0; i < K.length; i++) {
-            K[i] = 0;
-        }
-
-
         return binToHex(binCiphered.toString());
     }
 
     /**
      * Decrypt a string message with the DES block cipher
      *
-     * @param key       : String - the key to decrypt with
      * @param plaintext : String - Hex string to decrypt
      * @return Plaintext message string
      */
-    public String decrypt(DesKey key, String plaintext) {
-
-        // Build the key schedule
-        buildKeySchedule(key.getKey());
+    public String decrypt(String plaintext) {
 
         StringBuilder binPlaintext = new StringBuilder(hexToBin(plaintext));
 
@@ -296,11 +284,6 @@ public class DesCipher {
         StringBuilder binCiphered = new StringBuilder();
         for (String binCipheredBlock : binCipheredBlocks) {
             binCiphered.append(binCipheredBlock);
-        }
-
-        // Destroy key schedule
-        for (int i = 0; i < K.length; i++) {
-            K[i] = 0;
         }
 
         return binToUTF(binCiphered.toString());

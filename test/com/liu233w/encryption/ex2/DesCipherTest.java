@@ -19,15 +19,14 @@ public class DesCipherTest {
 
     @Test
     public void DesCipher_CanEncryptAndDecrypt() {
-        final DesCipher desCipher = new DesCipher();
-        final DesKey key = DesKey.random();
+        final DesCipher desCipher = new DesCipher(DesKey.random());
 
         final String plaintext = "Hello World hhhhh";
-        final String cipherText = desCipher.encrypt(key, plaintext);
+        final String cipherText = desCipher.encrypt(plaintext);
 
         assertThat(cipherText).isNotEmpty();
 
-        final String decrypted = desCipher.decrypt(key, cipherText);
+        final String decrypted = desCipher.decrypt(cipherText);
 
         assertThat(decrypted).isEqualTo(plaintext);
     }
