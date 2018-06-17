@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 
 /**
  * Originally from https://github.com/deadlytea/DES/blob/master/src/edu/carleton/comp4109/blockciphers/DES.java
- * I just made a few changes.
  */
 public class DesCipher {
 
