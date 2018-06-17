@@ -381,7 +381,7 @@ public class DesCipher {
         StringBuilder binKey = new StringBuilder(Long.toBinaryString(key));
 
         // Add leading zeros if not at key length for ease of computations
-        while (binKey.length() < 64) {
+        while (binKey.length() < KEY_LENGTH) {
             binKey.insert(0, "0");
         }
 
